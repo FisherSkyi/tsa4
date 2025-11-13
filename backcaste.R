@@ -2,7 +2,7 @@ library(astsa)
 
 set.seed(90210)
 
-n_of_p = 20
+n_of_p = 200
 
 x = arima.sim(list(order = c(1,0,1), ar =.9, ma=.5), n = 100)
 xr = rev(x) # xr is the reversed data
