@@ -1,11 +1,13 @@
+'''
+The following code adapted from Kalman Filter Python Example - Estimate Velocity From Position
+https://thekalmanfilter.com/kalman-filter-python-example/
+'''
+
 import numpy as np
 from numpy.linalg import inv
 import matplotlib.pyplot as plt
 
 # getMeasurement() simulate a sensor
-
-# initialize state: position 0 velopcity 60m/s
-
 def getMeasurement(updateNumber):
     if updateNumber == 1:
         getMeasurement.currentPosition = 0
@@ -71,8 +73,7 @@ def filter(z, updateNumber):
 
     # Estimate State
     residual = z - filter.H.dot(x_p)
-    filter.x = x_p + K*residual
-
+    filter.x = x_p + K*residual # Update state with measurement z, x is not directly observed
     # Estimate Covariance
     filter.P = P_p - K.dot(filter.H).dot(P_p)
 
@@ -92,15 +93,15 @@ def testFilter():
     posBound3Sigma = []
 
     for k in range(1,numOfMeasurements):
-        z = getMeasurement(k)
+        z = getMeasurement(k) # [z, getMeasurement.currentPosition, getMeasurement.currentVelocity]
         # Call Filter and return new State
         f = filter(z[0], k)
         # Save off that state so that it could be plotted
         measTime.append(k)
-        measPos.append(z[0])
+        measPos.append(z[0]) # measured position
         measDifPos.append(z[0]-z[1])
         estDifPos.append(f[0]-z[1])
-        estPos.append(f[0])
+        estPos.append(f[0]) # estimated position
         estVel.append(f[1])
         posVar = f[2]
         posBound3Sigma.append(3*np.sqrt(posVar[0][0]))
@@ -110,14 +111,14 @@ def testFilter():
 t = testFilter()
 
 plot1 = plt.figure(1)
-plt.scatter(t[0], t[1])
-plt.plot(t[0], t[2])
+plt.scatter(t[0], t[1]) # measPos vs time
+plt.plot(t[0], t[2]) # estPos vs time
 plt.ylabel('Position')
 plt.xlabel('Time')
 plt.grid(True)
 
 plot2 = plt.figure(2)
-plt.plot(t[0], t[3])
+plt.plot(t[0], t[3]) # estVel vs time
 plt.ylabel('Velocity (meters/seconds)')
 plt.xlabel('Update Number')
 plt.title('Velocity Estimate On Each Measurement Update \n', fontweight="bold")
