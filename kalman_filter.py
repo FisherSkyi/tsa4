@@ -126,8 +126,8 @@ plt.legend(['Estimate'])
 plt.grid(True)
 
 plot3 = plt.figure(3)
-plt.scatter(t[0], t[4], color = 'red')
-plt.plot(t[0], t[5])
+plt.scatter(t[0], t[4], color = 'red') # measDifPos vs time, measurement error
+plt.plot(t[0], t[5]) # estDifPos vs time
 plt.legend(['Estimate', 'Measurement'])
 plt.title('Position Errors On Each Measurement Update \n', fontweight="bold")
 #plt.plot(t[0], t[6])
